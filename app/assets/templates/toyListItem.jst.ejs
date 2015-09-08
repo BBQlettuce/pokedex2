@@ -1,0 +1,14 @@
+
+
+
+var $li = $("<li class='toy-list-item'>");
+$li.data('toy-id', toy.escape('id'));
+$li.data('pokemon-id', toy.escape('pokemon_id'));
+
+$li.html(
+  "Name: " + toy.escape('name') + "<br>" +
+  "Happiness: " + toy.escape('happiness') + "<br>" +
+  "Price: " + toy.escape('price')
+);
+
+this.$pokeDetail.find($('ul.toys')).append($li);

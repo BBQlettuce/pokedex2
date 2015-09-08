@@ -6,10 +6,10 @@ Pokedex.Views.Pokemon = Backbone.View.extend({
     this.$toyDetail = this.$el.find('.toy-detail');
 
     this.pokes = new Pokedex.Collections.Pokemon();
-    
+
     this.$pokeList.on(
-      'click', 
-      'li.poke-list-item', 
+      'click',
+      'li.poke-list-item',
       this.selectPokemonFromList.bind(this)
     );
     this.$newPoke.on(
@@ -25,15 +25,8 @@ Pokedex.Views.Pokemon = Backbone.View.extend({
   },
 
   addPokemonToList: function (pokemon) {
-    var $li = $("<li class='poke-list-item'>");
-    $li.data('id', pokemon.escape('id'));
-
-    $li.html(
-      "Name: " + pokemon.escape('name') + "<br>" + 
-      "Poke Type: " + pokemon.escape('poke_type')
-    );
-
-    this.$pokeList.append($li);
+    var rendered = JST['pokemonListItem']({pokemon: pokemon});
+    this.$pokeList.append(rendered);
   },
 
   refreshPokemon: function () {
@@ -51,27 +44,17 @@ Pokedex.Views.Pokemon = Backbone.View.extend({
   renderPokemonDetail: function (pokemon) {
     var that = this;
 
-    var $detail = $("<div class='detail'>");
-    $detail.html(
-      "<img src='" + pokemon.escape('image_url') + "'><br>" +
-      "Name: " + pokemon.escape('name') + "<br>"
-    );
-    for(var attr in pokemon.attributes) {
-      if(attr != 'id' && attr != 'image_url' && attr != 'name') {
-        $detail.append("<p>" + attr + ": " + pokemon.escape(attr) + "</p>");
-      }
-    };
+    var rendered = JST['pokemonDetail']({pokemon: pokemon});
+    this.$pokeDetail.html(rendered);
 
-    this.$toyDetail.html('');
-    this.$pokeDetail.html($detail);
-    this.$pokeDetail.append($("<p>Toys: </p>"));
-    this.$pokeDetail.append($("<ul class='toys'>"));
-        
-    pokemon.fetch({ success: function () {
-      pokemon.toys().forEach(function (toy) {
-        that.addToyToList(toy);
-      });
-    }});   
+    pokemon.fetch({
+      success: function () {
+        pokemon.toys().forEach(function (toy) {
+          that.addToyToList(toy);
+        })
+      }
+    })
+
   },
 
   selectPokemonFromList: function (event) {
@@ -103,7 +86,7 @@ Pokedex.Views.Pokemon = Backbone.View.extend({
     $li.html(
       "Name: " + toy.escape('name') + "<br>" +
       "Happiness: " + toy.escape('happiness') + "<br>" +
-      "Price: " + toy.escape('price')   
+      "Price: " + toy.escape('price')
     );
 
     this.$pokeDetail.find($('ul.toys')).append($li);
@@ -116,7 +99,7 @@ Pokedex.Views.Pokemon = Backbone.View.extend({
       "<img src='" + toy.escape('image_url') + "'>" + "<br>" +
       "Name: " + toy.escape('name') + "<br>" +
       "Happiness: " + toy.escape('happiness') + "<br>" +
-      "Price: " + toy.escape('price')   
+      "Price: " + toy.escape('price')
     );
 
     this.$toyDetail.html($detail);
