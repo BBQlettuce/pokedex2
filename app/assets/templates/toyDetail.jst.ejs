@@ -1,8 +1,6 @@
-
-<li class="toy-list-item" data-toy-id="<%= toy.escape('id')%>"
-  data-pokemon-id="<%=toy.escape('pokemon_id')%>">
+<div class='detail'>
+  <img src="<%= toy.escape('image_url')%>"><br>
   Name: <%= toy.escape('name') %><br>
   Happiness: <%= toy.escape('happiness') %><br>
   Price: <%= toy.escape('price') %>
-
-</li>
+</div>
